@@ -208,6 +208,10 @@ function draw() {
   }
 
   for (const fig of figures) {
+    fig.drawFrame();
+  }
+  
+  for (const fig of figures) {
     if (fig !== activeFigure) {
       fig.drawFigure();
     }
@@ -216,10 +220,7 @@ function draw() {
   if (activeFigure) {
     activeFigure.drawFigure();
   }
-
-  for (const fig of figures) {
-    fig.drawFrame();
-  }
+  
 
   if (appState === APP_STATE.REVEALING) {
     drawRevealDoorFade();
