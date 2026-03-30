@@ -35,8 +35,8 @@ let exitVideoReady = false;
 const FIGURE_CONFIG = [
   {
     name: "Researcher",
-    figureFile: "assets/researcher.png",
-    frameFile: "assets/researcherframe.png",
+    figureFile: "https://winteeeryan.github.io/entry/assets/researcher.png",
+    frameFile: "https://winteeeryan.github.io/entry/assets/researcherframe.png",
     frameX: 35,
     frameY: 470,
     frameH: 330,
@@ -47,8 +47,8 @@ const FIGURE_CONFIG = [
   },
   {
     name: "Observer",
-    figureFile: "assets/observer.png",
-    frameFile: "assets/observerframe.png",
+    figureFile: "https://winteeeryan.github.io/entry/assets/observer.png",
+    frameFile: "https://winteeeryan.github.io/entry/assets/observerframe.png",
     frameX: 225,
     frameY: 435,
     frameH: 260,
@@ -59,8 +59,8 @@ const FIGURE_CONFIG = [
   },
   {
     name: "Winter",
-    figureFile: "assets/self_person.png",
-    frameFile: "assets/selfframe.png",
+    figureFile: "https://winteeeryan.github.io/entry/assets/self_person.png",
+    frameFile: "https://winteeeryan.github.io/entry/assets/selfframe.png",
     frameX: 545,
     frameY: 320,
     frameH: 355,
@@ -71,8 +71,8 @@ const FIGURE_CONFIG = [
   },
   {
     name: "Designer",
-    figureFile: "assets/designer.png",
-    frameFile: "assets/designerframe.png",
+    figureFile: "https://winteeeryan.github.io/entry/assets/designer.png",
+    frameFile: "https://winteeeryan.github.io/entry/assets/designerframe.png",
     frameX: 785,
     frameY: 485,
     frameH: 300,
@@ -83,8 +83,8 @@ const FIGURE_CONFIG = [
   },
   {
     name: "Reader",
-    figureFile: "assets/reader.png",
-    frameFile: "assets/readerframe.png",
+    figureFile: "https://winteeeryan.github.io/entry/assets/reader.png",
+    frameFile: "https://winteeeryan.github.io/entry/assets/readerframe.png",
     frameX: 1070,
     frameY: 380,
     frameH: 335,
@@ -107,12 +107,12 @@ function setup() {
   pixelDensity(1);
   updateViewTransform();
 
-  bgVideo = createVideo(["assets/Entry.mp4"], onBgLoaded);
+  bgVideo = createVideo(["https://winteeeryan.github.io/entry/assets/entry.mp4"], onBgLoaded);
   bgVideo.size(DESIGN_W, DESIGN_H);
   bgVideo.volume(0);
   bgVideo.hide();
 
-  exitVideo = createVideo(["assets/Exit.mp4"], onExitLoaded);
+  exitVideo = createVideo(["https://winteeeryan.github.io/entry/assets/exit.mp4"], onExitLoaded);
   exitVideo.size(DESIGN_W, DESIGN_H);
   exitVideo.volume(0);
   exitVideo.hide();
@@ -210,7 +210,7 @@ function draw() {
   for (const fig of figures) {
     fig.drawFrame();
   }
-  
+
   for (const fig of figures) {
     if (fig !== activeFigure) {
       fig.drawFigure();
@@ -220,7 +220,6 @@ function draw() {
   if (activeFigure) {
     activeFigure.drawFigure();
   }
-  
 
   if (appState === APP_STATE.REVEALING) {
     drawRevealDoorFade();
@@ -275,7 +274,12 @@ function drawBackgroundVideo() {
 
     // 根据实际视频时长决定后段收黑速度
     let t = 0;
-    if (exitVideo && exitVideo.elt && isFinite(exitVideo.elt.duration) && exitVideo.elt.duration > 0) {
+    if (
+      exitVideo &&
+      exitVideo.elt &&
+      isFinite(exitVideo.elt.duration) &&
+      exitVideo.elt.duration > 0
+    ) {
       t = constrain(exitVideo.elt.currentTime / exitVideo.elt.duration, 0, 1);
     } else {
       t = constrain((millis() - collapseStartTime) / exitDurationMs, 0, 1);
@@ -308,7 +312,10 @@ function drawRevealDoorFade() {
 function getFigureAlpha(fig) {
   if (appState === APP_STATE.IDLE) return 1;
 
-  if (appState === APP_STATE.WINTER_SELECTED || appState === APP_STATE.COLLAPSING) {
+  if (
+    appState === APP_STATE.WINTER_SELECTED ||
+    appState === APP_STATE.COLLAPSING
+  ) {
     if (fig.name === "Winter") return 1;
     const t = constrain((millis() - stateStartTime) / 900, 0, 1);
     return 1 - t;
@@ -326,11 +333,17 @@ function getFigureAlpha(fig) {
 }
 
 function getWinterCollapseAlpha() {
-  if (appState !== APP_STATE.COLLAPSING && appState !== APP_STATE.REVEALING) return 1;
+  if (appState !== APP_STATE.COLLAPSING && appState !== APP_STATE.REVEALING)
+    return 1;
 
   if (appState === APP_STATE.COLLAPSING) {
     let t = 0;
-    if (exitVideo && exitVideo.elt && isFinite(exitVideo.elt.duration) && exitVideo.elt.duration > 0) {
+    if (
+      exitVideo &&
+      exitVideo.elt &&
+      isFinite(exitVideo.elt.duration) &&
+      exitVideo.elt.duration > 0
+    ) {
       t = constrain(exitVideo.elt.currentTime / exitVideo.elt.duration, 0, 1);
     } else {
       t = constrain((millis() - collapseStartTime) / exitDurationMs, 0, 1);
@@ -365,7 +378,8 @@ function toDesignMouseY() {
 }
 
 function mousePressed() {
-  if (!(appState === APP_STATE.IDLE || appState === APP_STATE.WINTER_SELECTED)) return;
+  if (!(appState === APP_STATE.IDLE || appState === APP_STATE.WINTER_SELECTED))
+    return;
 
   const mx = toDesignMouseX();
   const my = toDesignMouseY();
@@ -408,8 +422,16 @@ function mouseDragged() {
     stateStartTime = millis();
   }
 
-  if (activeFigure.name === "Winter" && appState === APP_STATE.WINTER_SELECTED) {
-    const d = dist(activeFigure.x, activeFigure.y, activeFigure.anchorX, activeFigure.anchorY);
+  if (
+    activeFigure.name === "Winter" &&
+    appState === APP_STATE.WINTER_SELECTED
+  ) {
+    const d = dist(
+      activeFigure.x,
+      activeFigure.y,
+      activeFigure.anchorX,
+      activeFigure.anchorY
+    );
     if (d > 40) {
       appState = APP_STATE.COLLAPSING;
       collapseStartTime = millis();
@@ -571,8 +593,12 @@ class Figure {
       return false;
     }
 
-    const ix = floor(map(px, this.x, this.x + this.figureW, 0, this.figureImg.width));
-    const iy = floor(map(py, this.y, this.y + this.figureH, 0, this.figureImg.height));
+    const ix = floor(
+      map(px, this.x, this.x + this.figureW, 0, this.figureImg.width)
+    );
+    const iy = floor(
+      map(py, this.y, this.y + this.figureH, 0, this.figureImg.height)
+    );
 
     const cx = constrain(ix, 0, this.figureImg.width - 1);
     const cy = constrain(iy, 0, this.figureImg.height - 1);
@@ -616,7 +642,8 @@ class Figure {
     for (let i = 0; i < slices; i++) {
       const sy = i * sliceH;
       const dx = this.x + random(-amp, amp);
-      const dy = this.y + sy * (this.figureH / this.figureImg.height) + random(-1, 1);
+      const dy =
+        this.y + sy * (this.figureH / this.figureImg.height) + random(-1, 1);
 
       if (isDesigner) {
         this.drawDesignerSliceWhiteSilhouette(dx, dy, sy, sliceH, alphaMul);
@@ -698,14 +725,44 @@ class Figure {
 
     blendMode(BLEND);
     tint(255, 255, 255, 145 * alphaMul);
-    image(this.figureImg, dx, dy, this.figureW, dh, 0, sy, this.figureImg.width, sliceH);
+    image(
+      this.figureImg,
+      dx,
+      dy,
+      this.figureW,
+      dh,
+      0,
+      sy,
+      this.figureImg.width,
+      sliceH
+    );
 
     blendMode(SCREEN);
     tint(255, 255, 255, 85 * alphaMul);
-    image(this.figureImg, dx - 1, dy, this.figureW, dh, 0, sy, this.figureImg.width, sliceH);
+    image(
+      this.figureImg,
+      dx - 1,
+      dy,
+      this.figureW,
+      dh,
+      0,
+      sy,
+      this.figureImg.width,
+      sliceH
+    );
 
     tint(220, 240, 255, 45 * alphaMul);
-    image(this.figureImg, dx + 1, dy, this.figureW, dh, 0, sy, this.figureImg.width, sliceH);
+    image(
+      this.figureImg,
+      dx + 1,
+      dy,
+      this.figureW,
+      dh,
+      0,
+      sy,
+      this.figureImg.width,
+      sliceH
+    );
 
     blendMode(BLEND);
     noTint();
@@ -734,7 +791,10 @@ class Figure {
     for (let i = 0; i < slices; i++) {
       const sy = i * sliceH;
       const dx = this.x + random(-amp, amp);
-      const dy = this.y + sy * (this.figureH / this.figureImg.height) + random(-1.1, 1.1);
+      const dy =
+        this.y +
+        sy * (this.figureH / this.figureImg.height) +
+        random(-1.1, 1.1);
 
       tint(255, 255 * winterAlpha);
       image(
@@ -774,10 +834,22 @@ class Figure {
     push();
 
     tint(0, 235 * s);
-    image(this.figureImg, this.anchorX, this.anchorY, this.figureW, this.figureH);
+    image(
+      this.figureImg,
+      this.anchorX,
+      this.anchorY,
+      this.figureW,
+      this.figureH
+    );
 
     tint(0, 120 * s);
-    image(this.figureImg, this.anchorX + 0.5, this.anchorY + 0.5, this.figureW, this.figureH);
+    image(
+      this.figureImg,
+      this.anchorX + 0.5,
+      this.anchorY + 0.5,
+      this.figureW,
+      this.figureH
+    );
 
     noTint();
     pop();
